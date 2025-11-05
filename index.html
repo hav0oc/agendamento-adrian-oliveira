@@ -105,38 +105,57 @@
 
       // WhatsApp: número do Adrian (formato internacional sem +)
       <script>
-  const phoneNumber = "5511956080667"; // seu número com DDI
+  // CONFIGURAÇÕES GERAIS
+  const phoneNumber = "5511956080667"; // seu número com DDI (Brasil: 55)
   const btnAgendar = document.getElementById("whatsappButton");
   const btnFalar = document.getElementById("whatsappGeneral");
   const inputData = document.getElementById("date");
   const inputHora = document.getElementById("time");
+  const pixBtn = document.getElementById("copyPix");
 
+  // FUNÇÃO PARA ABRIR WHATSAPP (compatível com celular e PC)
   function abrirWhatsApp(mensagem) {
     const link = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(mensagem)}`;
-    // funciona em celular e PC
     window.location.href = link;
   }
 
-  btnAgendar.addEventListener("click", () => {
-    const data = inputData.value;
-    const hora = inputHora.value;
-    const msg = data && hora
-      ? `Olá! Quero agendar meu horário para dia ${data} às ${hora}.`
-      : `Olá! Quero agendar meu horário para dia ___ às ___ (por favor, confirme a data disponível).`;
-    abrirWhatsApp(msg);
-  });
+  // BOTÃO: AGENDAR VIA WHATSAPP
+  if (btnAgendar) {
+    btnAgendar.addEventListener("click", () => {
+      const data = inputData?.value || "";
+      const hora = inputHora?.value || "";
+      const msg = data && hora
+        ? `Olá! Quero agendar meu horário para dia ${data} às ${hora}.`
+        : `Olá! Quero agendar meu horário para dia ___ às ___ (por favor, confirme a data disponível).`;
+      abrirWhatsApp(msg);
+    });
+  }
 
-  btnFalar.addEventListener("click", () => {
-    const msg = "Olá! Quero tirar uma dúvida sobre o atendimento. Pode me ajudar?";
-    abrirWhatsApp(msg);
+  // BOTÃO: FALAR NO WHATSAPP
+  if (btnFalar) {
+    btnFalar.addEventListener("click", () => {
+      const msg = "Olá! Quero tirar uma dúvida sobre o atendimento.";
+      abrirWhatsApp(msg);
+    });
+  }
+
+  // BOTÃO: COPIAR PIX
+  if (pixBtn) {
+    pixBtn.addEventListener("click", () => {
+      const chavePix = document.getElementById("pixKey").innerText.trim();
+      navigator.clipboard.writeText(chavePix);
+      alert("Chave PIX copiada!");
+    });
+  }
+
+  // MELHORIA: pressionar Enter envia agendamento
+  document.addEventListener("keypress", (e) => {
+    if (e.key === "Enter" && document.activeElement.tagName !== "TEXTAREA") {
+      e.preventDefault();
+      if (btnAgendar) btnAgendar.click();
+    }
   });
 </script>
-
-      // pequena melhoria: ao pressionar Enter no nome, vai para descrição
-      document.getElementById('productName').addEventListener('keydown', (e)=>{
-        if(e.key === 'Enter') { e.preventDefault(); document.getElementById('productDesc').focus(); }
-      });
-    </script>
   </div>
 </body>
 </html>
