@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Adrian Manicure — Agendar (WhatsApp)</title>
+  <style>
+    :root{--bg:#f8f3f6;--accent:#ff90c7;--muted:#6b7280;--card:#ffffff}
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; background:linear-gradient(180deg,var(--bg),#f7dcee);color:#ffffff}
+    .container{max-width:980px;margin:28px auto;padding:20px}
+    .card{background:var(--card);border-radius:14px;box-shadow:0 8px 30px rgba(15,23,42,0.08);overflow:hidden;display:flex;gap:1px}
+    .left{flex:1;min-width:300px;background-image:url('');background-size:cover;background-position:center;padding:20px;display:flex;align-items:center;justify-content:center}
+    .image-wrap{width:100%;max-width:420px;aspect-ratio:4/5;border-radius:12px;background:#f3f4f6;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative}
+    .image-wrap img{width:100%;height:100%;object-fit:cover}
+    .upload-btn{position:absolute;bottom:12px;right:12px;background:rgba(211, 88, 88, 0.9);border-radius:10px;padding:6px 8px;font-size:13px;cursor:pointer;border:1px solid #ececec}
+    .right{flex:1;min-width:320px;padding:28px}
+    h1{font-size:20px;margin:0 0 8px}
+    .name{font-weight:700;font-size:22px;color:#0f172a}
+    .desc{color:var(--muted);margin:12px 0 18px;line-height:1.5}
+    .price{font-size:28px;font-weight:800;color:var(--accent);margin:8px 0}
+    .price small{font-weight:600;color:#111;font-size:16px;margin-left:6px}
+    .cta{display:flex;gap:12px;margin-top:18px;flex-wrap:wrap}
+    .btn{padding:12px 16px;border-radius:12px;font-weight:700;cursor:pointer;border:0}
+    .btn-primary{background:var(--accent);color:white;box-shadow:0 8px 18px rgba(214,51,132,0.18)}
+    .btn-outline{background:transparent;border:2px solid #e6e6ea;color:#111}
+    .meta{margin-top:18px;color:var(--muted);font-size:14px}
+    .pix{display:flex;align-items:center;gap:8px;margin-top:14px}
+    .pix input{border:1px dashed #e6e6ea;padding:10px;border-radius:8px;background:#fafafa;flex:1}
+    .copy{padding:8px 10px;border-radius:8px;background:#111;color:#fff;font-size:13px;cursor:pointer}
+    .note{margin-top:12px;font-size:13px;color:#475569}
+    footer{margin-top:18px;font-size:13px;color:#94a3b8}
+    .controls{display:flex;gap:10px;align-items:center;margin-top:12px;flex-wrap:wrap}
+    .controls input{padding:10px;border-radius:8px;border:1px solid #e6e6ea;background:#fff}
+    .label{font-size:13px;color:var(--muted);margin-bottom:6px;display:block}
+    @media (max-width:880px){.card{flex-direction:column}.left,.right{padding:18px}}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div style="text-align:center;margin-bottom:12px"><strong style="font-size:18px">Adrian Manicure</strong></div>
+    <div class="card" role="main">
+      <div class="left" style="background-image:url('fundounha.jpeg'); background-size:cover; background-position:center;">
+  <div class="image-wrap" id="imageWrap">
+    <img id="productImage" src="imgunha.jpeg" alt="Imagem do produto" />
+  </div>
+</div>
+      <div class="right">
+        <h1 class="name" contenteditable="true" id="productName">Agendamento</h1>
+        <p class="desc" contenteditable="true" id="productDesc">Faça já o seu agendamento em poucos cliques!</p>
+        <div class="price">R$ <span id="priceValue">27,50</span> <small>à vista</small></div>
+
+        <div class="controls" aria-hidden="false">
+          <div style="min-width:160px">
+            <label class="label" for="dateInput">Escolha a data</label>
+            <input id="dateInput" type="date" />
+          </div>
+          <div style="min-width:140px">
+            <label class="label" for="timeInput">Escolha o horário</label>
+            <input id="timeInput" type="time" />
+          </div>
+        </div>
+
+        <div class="cta">
+          <button class="btn btn-primary" id="bookBtn">Agendar (via WhatsApp)</button>
+          <button class="btn btn-outline" id="whatsBtn">Falar no WhatsApp</button>
+        </div>
+
+        <div class="meta">
+          <div class="pix">
+            <input id="pixKey" value="00020126330014BR.GOV.BCB.PIX011138230069832520400005303986540527.505802BR5901N6001C62180514AdrianManicure6304485E
+
+" aria-label="Chave PIX" />
+            <button class="copy" id="copyPix">Copiar PIX</button>
+          </div>
+          <footer>Adrian Oliveira agradece a preferência!</footer>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Upload e preview de imagem
+      const imageInput = document.getElementById('imageInput');
+      const productImage = document.getElementById('productImage');
+      imageInput.addEventListener('change', e => {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = function(ev){ productImage.src = ev.target.result; };
+        reader.readAsDataURL(file);
+      });
+
+      // Copiar PIX
+      const copyBtn = document.getElementById('copyPix');
+      const pixInput = document.getElementById('pixKey');
+      copyBtn.addEventListener('click', async () => {
+        try{
+          await navigator.clipboard.writeText(pixInput.value);
+          copyBtn.textContent = 'Copiado!';
+          setTimeout(()=> copyBtn.textContent='Copiar PIX',1500);
+        }catch(err){
+          alert('Não foi possível copiar automaticamente. Selecione e copie manualmente.');
+        }
+      });
+
+      // WhatsApp: número do Adrian (formato internacional sem +)
+      const phone = '5511956080667'; // 11 95608-0667
+      const whatsBtn = document.getElementById('whatsBtn');
+      const bookBtn = document.getElementById('bookBtn');
+      function buildMessage(includeDateTime=true){
+        const name = document.getElementById('productName').innerText.trim() || 'serviço';
+        const date = document.getElementById('dateInput').value;
+        const time = document.getElementById('timeInput').value;
+        const price = document.getElementById('priceValue').innerText.trim();
+        if(includeDateTime){
+          if(date && time){
+            // formata data para dd/mm/aaaa
+            const d = new Date(date);
+            const dia = String(d.getDate()).padStart(2,'0');
+            const mes = String(d.getMonth()+1).padStart(2,'0');
+            const ano = d.getFullYear();
+            return `Oi, quero agendar um horário para ${name} dia ${dia}/${mes}/${ano} às ${time}`;
+          }else{
+            return `Oi, quero agendar um horário para ${name} dia ___ às ___`;
+          }
+        }else{
+          return `Olá! Tenho interesse no ${name} (R$ ${price}) — pode me passar mais informações?`;
+        }
+      }
+
+      whatsBtn.addEventListener('click', ()=>{
+        const text = encodeURIComponent(buildMessage(false));
+        const url = `https://wa.me/${phone}?text=${text}`;
+        window.open(url,'_blank');
+      });
+
+      bookBtn.addEventListener('click', ()=>{
+        const text = encodeURIComponent(buildMessage(true));
+        const url = `https://wa.me/${phone}?text=${text}`;
+        window.open(url,'_blank');
+      });
+
+      // pequena melhoria: ao pressionar Enter no nome, vai para descrição
+      document.getElementById('productName').addEventListener('keydown', (e)=>{
+        if(e.key === 'Enter') { e.preventDefault(); document.getElementById('productDesc').focus(); }
+      });
+    </script>
+  </div>
+</body>
+</html>
