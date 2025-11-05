@@ -108,11 +108,18 @@
       // BOTÃO: AGENDAR VIA WHATSAPP
       if (btnAgendar) {
         btnAgendar.addEventListener("click", () => {
-          const data = inputData?.value || "";
-          const hora = inputHora?.value || "";
-          const msg = data && hora
-            ? `Olá! Tudo bem? Eu gostaria de agendar a minha unha para o dia ${data} às ${hora}.`
-            : `Olá! Tudo bem? Eu gostaria de agendar a minha unha para o dia ___ às ___ (por favor, confirme a data disponível).`;
+         const data = inputData?.value || "";
+const hora = inputHora?.value || "";
+let dataFormatada = "";
+
+if (data) {
+  const partes = data.split("-");
+  dataFormatada = `${partes[2]}/${partes[1]}/${partes[0]}`; // transforma AAAA-MM-DD → DD/MM/AAAA
+}
+
+const msg = data && hora
+  ? `Olá! Quero agendar meu horário para dia ${dataFormatada} às ${hora}.`
+  : `Olá! Quero agendar meu horário para dia ___ às ___ (por favor, confirme a data disponível).`;
           abrirWhatsApp(msg);
         });
       }
