@@ -104,41 +104,33 @@
       });
 
       // WhatsApp: número do Adrian (formato internacional sem +)
-      const phone = '5511956080667'; // 11 95608-0667
-      const whatsBtn = document.getElementById('whatsBtn');
-      const bookBtn = document.getElementById('bookBtn');
-      function buildMessage(includeDateTime=true){
-        const name = document.getElementById('productName').innerText.trim() || 'serviço';
-        const date = document.getElementById('dateInput').value;
-        const time = document.getElementById('timeInput').value;
-        const price = document.getElementById('priceValue').innerText.trim();
-        if(includeDateTime){
-          if(date && time){
-            // formata data para dd/mm/aaaa
-            const d = new Date(date);
-            const dia = String(d.getDate()).padStart(2,'0');
-            const mes = String(d.getMonth()+1).padStart(2,'0');
-            const ano = d.getFullYear();
-            return `Oi, quero agendar um horário para ${name} dia ${dia}/${mes}/${ano} às ${time}`;
-          }else{
-            return `Oi, quero agendar um horário para ${name} dia ___ às ___`;
-          }
-        }else{
-          return `Olá! Tenho interesse no ${name} (R$ ${price}) — pode me passar mais informações?`;
-        }
-      }
+      <script>
+  const phoneNumber = "5511956080667"; // seu número com DDI
+  const btnAgendar = document.getElementById("whatsappButton");
+  const btnFalar = document.getElementById("whatsappGeneral");
+  const inputData = document.getElementById("date");
+  const inputHora = document.getElementById("time");
 
-      whatsBtn.addEventListener('click', ()=>{
-        const text = encodeURIComponent(buildMessage(false));
-        const url = `https://wa.me/${phone}?text=${text}`;
-        window.open(url,'_blank');
-      });
+  function abrirWhatsApp(mensagem) {
+    const link = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(mensagem)}`;
+    // funciona em celular e PC
+    window.location.href = link;
+  }
 
-      bookBtn.addEventListener('click', ()=>{
-        const text = encodeURIComponent(buildMessage(true));
-        const url = `https://wa.me/${phone}?text=${text}`;
-        window.open(url,'_blank');
-      });
+  btnAgendar.addEventListener("click", () => {
+    const data = inputData.value;
+    const hora = inputHora.value;
+    const msg = data && hora
+      ? `Olá! Quero agendar meu horário para dia ${data} às ${hora}.`
+      : `Olá! Quero agendar meu horário para dia ___ às ___ (por favor, confirme a data disponível).`;
+    abrirWhatsApp(msg);
+  });
+
+  btnFalar.addEventListener("click", () => {
+    const msg = "Olá! Quero tirar uma dúvida sobre o atendimento. Pode me ajudar?";
+    abrirWhatsApp(msg);
+  });
+</script>
 
       // pequena melhoria: ao pressionar Enter no nome, vai para descrição
       document.getElementById('productName').addEventListener('keydown', (e)=>{
