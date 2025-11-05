@@ -111,8 +111,8 @@
           const data = inputData?.value || "";
           const hora = inputHora?.value || "";
           const msg = data && hora
-            ? `Olá! Quero agendar meu horário para dia ${data} às ${hora}.`
-            : `Olá! Quero agendar meu horário para dia ___ às ___ (por favor, confirme a data disponível).`;
+            ? `Olá! Tudo bem? Eu gostaria de agendar o meu horário para dia ${data} às ${hora}.`
+            : `Olá! Tudo bem? Eu gostaria de agendar o meu horário para dia ___ às ___ (por favor, confirme a data disponível).`;
           abrirWhatsApp(msg);
         });
       }
